@@ -11,7 +11,8 @@
             let DestinationEnum = Object.freeze({ HARDWARE_AND_SOFTWARE: 0, HARDWARE_ONLY: 1, SOFTWARE_ONLY: 2 });
             var settingsCache = {};
             let vUserCount; // define the setTitle function as 'exampleText'
-            let krabsExample = {
+// Beginning of let KrabsDiscordMemberCount definition
+            let KrabsDiscordMemberCount = {
                 type: "com.krabs.discordMemberCount.action",
                 onKeyDown: function (context, settings, coordinates, userDesiredState) {
                     /* Code here will run when the key is pressed https://developer.elgato.com/documentation/stream-deck/sdk/events-received/#keydown */
@@ -61,7 +62,7 @@
                         //console.log(vUserCount)
                         //let json = { event: "setTitle", context: context, payload: { title: ""+ vUserCount, target: DestinationEnum.HARDWARE_AND_SOFTWARE } };
                         //websocket.send(JSON.stringify(json));
-                        krabsExample.SetTitle(context, vUserCount);
+                        KrabsDiscordMemberCount.SetTitle(context, vUserCount);
                     }
                     getData();
                     setInterval(() => {
@@ -108,6 +109,7 @@
                   console.log(settings)
                 }
             };
+// End of let KrabsDiscordMemberCount definition
 
             // Set the state of a key
             function setState(context, inState) {
@@ -146,32 +148,32 @@
                         let settings = jsonPayload["settings"];
                         let coordinates = jsonPayload["coordinates"];
                         let userDesiredState = jsonPayload["userDesiredState"];
-                        krabsExample.onKeyDown(context, settings, coordinates, userDesiredState);
+                        KrabsDiscordMemberCount.onKeyDown(context, settings, coordinates, userDesiredState);
                     } else if (event == "keyUp") {
                         let jsonPayload = jsonObj["payload"];
                         let settings = jsonPayload["settings"];
                         let coordinates = jsonPayload["coordinates"];
                         let userDesiredState = jsonPayload["userDesiredState"];
-                        krabsExample.onKeyUp(context, settings, coordinates, userDesiredState);
+                        KrabsDiscordMemberCount.onKeyUp(context, settings, coordinates, userDesiredState);
                     } else if (event == "willAppear") {
                         //let jsonPayload = jsonObj["payload"];
                         let settings = jsonPayload["settings"];
                         let coordinates = jsonPayload["coordinates"];
                         let userDesiredState = jsonPayload["userDesiredState"];
-                        krabsExample.onWillAppear(context, settings, coordinates, userDesiredState);
+                        KrabsDiscordMemberCount.onWillAppear(context, settings, coordinates, userDesiredState);
                     } else if (event == "willDisappear") {
                         var settings = jsonPayload['settings'];
                         var coordinates = jsonPayload['coordinates'];
-                        krabsExample.onWillDisappear(context, settings, coordinates);
+                        KrabsDiscordMemberCount.onWillDisappear(context, settings, coordinates);
                     } else if (event == "sendToPlugin") {
                         console.log("sendToPlugin received payload: ", jsonPayload);
                         if (jsonPayload != null && jsonPayload.hasOwnProperty('vKrabs_DiscordURL') && jsonPayload.hasOwnProperty('vKrabs_Interval') && jsonPayload.hasOwnProperty('vKrabs_OnlineOnly')) {
-                          krabsExample.SetSettings(context, jsonPayload);
+                          KrabsDiscordMemberCount.SetSettings(context, jsonPayload);
                       }
                     } else if (event == "didReceiveSettings") {
                         console.log("didReceiveSettings received payload: ", jsonPayload);
                         if (jsonPayload != null && jsonPayload['settings'] != null) {
-                          krabsExample.SetSettings(context, jsonPayload['settings']);
+                          KrabsDiscordMemberCount.SetSettings(context, jsonPayload['settings']);
                     }
                 }
                   };
