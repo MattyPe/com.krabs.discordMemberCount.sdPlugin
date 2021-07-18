@@ -1,0 +1,38 @@
+{
+    "Actions": [
+        {
+            "Icon": "resources/images/actionIcon",
+            "Name": "Discord Member Count",
+            "States": [
+                {
+                  "Image": "resources/images/actionDefaultImageOnline",
+                  "TitleAlignment": "bottom",
+                  "FontSize": "12"
+                },
+                {
+                  "Image": "resources/images/actionDefaultImageInVoice",
+                  "TitleAlignment": "bottom",
+                  "FontSize": "12"
+                }
+              ],
+            "SupportedInMultiActions": false,
+            "Tooltip": "Shows number of members active on Discord",
+            "UUID": "com.krabs.discordMemberCount.action"
+        }
+    ],
+    "SDKVersion": 2,
+    "Author": "Krabs",
+    "Category": "Krabs Gaming",
+    "CategoryIcon": "resources/images/categoryIcon",
+    "CodePath": "discordMemberCount.html",
+    "PropertyInspectorPath": "discordMemberCount_pi.html",
+    "Description": "Shows number of members active on Discord.",
+    "Name": "Discord Member Count",
+    "Icon": "resources/images/pluginIcon",
+    "URL": "https://www.krabs.me/streamdeck-plugins",
+    "Version": "1.0",
+    "OS": [
+        { "Platform": "windows", "MinimumVersion": "10" }
+    ],
+    "Software": { "MinimumVersion": "5.0" }
+}

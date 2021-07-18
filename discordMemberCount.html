@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>com.krabs.discordMemberCount.action</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <script>
+            let websocket = null;
+            let pluginUUID = null;
+            let DestinationEnum = Object.freeze({ HARDWARE_AND_SOFTWARE: 0, HARDWARE_ONLY: 1, SOFTWARE_ONLY: 2 });
+            var settingsCache = {};
+            let vUserCount; // define the setTitle function as 'exampleText'
+            let krabsExample = {
+                type: "com.krabs.discordMemberCount.action",
+                onKeyDown: function (context, settings, coordinates, userDesiredState) {
+                    /* Code here will run when the key is pressed https://developer.elgato.com/documentation/stream-deck/sdk/events-received/#keydown */
+                },
+                onKeyUp: function (context, settings, coordinates, userDesiredState) {
+                    /* Code here will run when the key is released https://developer.elgato.com/documentation/stream-deck/sdk/events-received/#keyup */
+                },
+                fKrabs_GetData: function (context, settings) {
+                    var payload = settingsCache[context];
+                    if (payload != null && payload.hasOwnProperty('vKrabs_Interval')) {
+                      var vRefreshInterval = payload['vKrabs_Interval'];
+                    }
+                    if (payload != null && payload.hasOwnProperty('vKrabs_DiscordURL')) {
+                      var vDiscordURL = payload['vKrabs_DiscordURL'];
+                    }
+                    if (payload != null && payload.hasOwnProperty('vKrabs_InVoiceOnly')) {
+                      var vInVoiceOnly = payload['vKrabs_OnlineOnly'];
+                    }
+                    //var payload = settingsCache[context];
+                    async function getData() {
+                        var payload = settingsCache[context];
+                        if (payload != null && payload.hasOwnProperty('vKrabs_Interval')) {
+                          var vRefreshInterval = payload['vKrabs_Interval'];
+                        }
+                        if (payload != null && payload.hasOwnProperty('vKrabs_DiscordURL')) {
+                          var vDiscordURL = payload['vKrabs_DiscordURL'];
+                        }
+                        if (payload != null && payload.hasOwnProperty('vKrabs_InVoiceOnly')) {
+                          var vInVoiceOnly = payload['vKrabs_InVoiceOnly'];
+                        }
+
+                        console.log("Krabs Settings: ", vRefreshInterval, vDiscordURL, vInVoiceOnly);
+
+                        //const response = await fetch('https://discordapp.com/api/guilds/420731340913115136/widget.json', {});
+                        const response = await fetch(vDiscordURL);
+                        const u = await response.json();
+                    		//var vUserCount = u.presence_count
+                        if (vInVoiceOnly == false) {
+                          vUserCount = u.presence_count
+                          var inState = 0
+                          setState(context, inState);
+                        } else if (vInVoiceOnly == true) {
+                          vUserCount = u.members.filter(function(o) { return o.deaf == false }).length
+                          var inState = 1
+                          setState(context, inState);
+                        }
+                        //console.log(vUserCount)
+                        //let json = { event: "setTitle", context: context, payload: { title: ""+ vUserCount, target: DestinationEnum.HARDWARE_AND_SOFTWARE } };
+                        //websocket.send(JSON.stringify(json));
+                        krabsExample.SetTitle(context, vUserCount);
+                    }
+                    getData();
+                    setInterval(() => {
+                    getData();
+                  }, vRefreshInterval * 1000)
+                   //console.log("refresh: ",vRefreshInterval) // 30 seconds
+                },
+
+                onWillAppear: function (context, settings, coordinates) {
+                    /* Code here will run when the Stream Deck application is opened, the user switches between profiles or when a user adds the action
+                        to their Stream Deck https://developer.elgato.com/documentation/stream-deck/sdk/events-received/#willappear
+                    */
+                    console.log("onWillAppear context: ", context, " settings: ", settings);
+                    settingsCache[context] = settings;
+                    this.fKrabs_GetData(context);
+                },
+                onWillDisappear: function (context, settings, coordinates) {
+                    console.log("onWillDisappear context: ", context, " settings: ", settings);
+                },
+                SetTitle: function (context, vUserCount) {
+                    let json = { event: "setTitle", context: context, payload: { title: ""+ vUserCount, target: DestinationEnum.HARDWARE_AND_SOFTWARE } };
+                    websocket.send(JSON.stringify(json));
+                },
+                getSettings: function (context, payload) {
+                    websocket.send(context, 'getSettings', {});
+                    console.log(settings)
+                },
+                SetSettings: function (context, settings) {
+                    var json = {
+                        "event": "setSettings",
+                        "context": context,
+                        "payload": settings
+                    };
+
+                    websocket.send(JSON.stringify(json));
+                    settingsCache[context] = settings;
+                    console.log("New Settings", settings);
+                    console.log("New JSON", JSON.stringify(json));
+                },
+                AddToSettings: function (context, newSettings) {
+                  settingsCache[context]
+                },
+                didReceiveSettings: function (context, payload) {
+                  console.log(settings)
+                }
+            };
+
+            // Set the state of a key
+            function setState(context, inState) {
+                if (websocket) {
+                    var json = {
+                        'event': 'setState',
+                        'context': context,
+                        'payload': {
+                            'state': inState
+                        }
+                    };
+
+                    websocket.send(JSON.stringify(json));
+                }
+            }
+
+            function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, inInfo) {
+                pluginUUID = inPluginUUID;
+                websocket = new WebSocket("ws://127.0.0.1:" + inPort);
+                function registerPlugin(inPluginUUID) {
+                    let json = { event: inRegisterEvent, uuid: inPluginUUID };
+                    websocket.send(JSON.stringify(json));
+                }
+                websocket.onopen = function () {
+                    registerPlugin(pluginUUID);
+                };
+                websocket.onmessage = function (evt) {
+                    let jsonObj = JSON.parse(evt.data);
+                    console.log("onmessage json: ", jsonObj);
+                    let event = jsonObj["event"];
+                    let action = jsonObj["action"];
+                    let context = jsonObj["context"];
+                    var jsonPayload = jsonObj['payload'] || {};
+                    if (event == "keyDown") {
+                        let jsonPayload = jsonObj["payload"];
+                        let settings = jsonPayload["settings"];
+                        let coordinates = jsonPayload["coordinates"];
+                        let userDesiredState = jsonPayload["userDesiredState"];
+                        krabsExample.onKeyDown(context, settings, coordinates, userDesiredState);
+                    } else if (event == "keyUp") {
+                        let jsonPayload = jsonObj["payload"];
+                        let settings = jsonPayload["settings"];
+                        let coordinates = jsonPayload["coordinates"];
+                        let userDesiredState = jsonPayload["userDesiredState"];
+                        krabsExample.onKeyUp(context, settings, coordinates, userDesiredState);
+                    } else if (event == "willAppear") {
+                        //let jsonPayload = jsonObj["payload"];
+                        let settings = jsonPayload["settings"];
+                        let coordinates = jsonPayload["coordinates"];
+                        let userDesiredState = jsonPayload["userDesiredState"];
+                        krabsExample.onWillAppear(context, settings, coordinates, userDesiredState);
+                    } else if (event == "willDisappear") {
+                        var settings = jsonPayload['settings'];
+                        var coordinates = jsonPayload['coordinates'];
+                        krabsExample.onWillDisappear(context, settings, coordinates);
+                    } else if (event == "sendToPlugin") {
+                        console.log("sendToPlugin received payload: ", jsonPayload);
+                        if (jsonPayload != null && jsonPayload.hasOwnProperty('vKrabs_DiscordURL') && jsonPayload.hasOwnProperty('vKrabs_Interval') && jsonPayload.hasOwnProperty('vKrabs_OnlineOnly')) {
+                          krabsExample.SetSettings(context, jsonPayload);
+                      }
+                    } else if (event == "didReceiveSettings") {
+                        console.log("didReceiveSettings received payload: ", jsonPayload);
+                        if (jsonPayload != null && jsonPayload['settings'] != null) {
+                          krabsExample.SetSettings(context, jsonPayload['settings']);
+                    }
+                }
+                  };
+                  websocket.onclose = function () {};
+              };
+
+        </script>
+    </body>
+</html>
