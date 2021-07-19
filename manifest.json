@@ -17,7 +17,7 @@
               ],
             "SupportedInMultiActions": false,
             "Tooltip": "Shows number of members active on Discord",
-            "UUID": "com.krabs.discordMemberCount.action"
+            "UUID": "com.krabs.discordmembercount.action"
         }
     ],
     "SDKVersion": 2,

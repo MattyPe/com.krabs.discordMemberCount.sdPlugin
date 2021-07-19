@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>com.krabs.discordMemberCount.action</title>
+        <title>com.krabs.discordmembercount.action</title>
         <meta charset="utf-8" />
     </head>
     <body>
@@ -10,10 +10,10 @@
             let pluginUUID = null;
             let DestinationEnum = Object.freeze({ HARDWARE_AND_SOFTWARE: 0, HARDWARE_ONLY: 1, SOFTWARE_ONLY: 2 });
             var settingsCache = {};
-            let vUserCount; // define the setTitle function as 'exampleText'
+            let vUserCount;
 // Beginning of let KrabsDiscordMemberCount definition
             let KrabsDiscordMemberCount = {
-                type: "com.krabs.discordMemberCount.action",
+                type: "com.krabs.discordmembercount.action",
                 onKeyDown: function (context, settings, coordinates, userDesiredState) {
                     /* Code here will run when the key is pressed https://developer.elgato.com/documentation/stream-deck/sdk/events-received/#keydown */
                 },
@@ -46,16 +46,18 @@
 
                         console.log("Krabs Settings: ", vRefreshInterval, vDiscordURL, vInVoiceOnly);
 
-                        //const response = await fetch('https://discordapp.com/api/guilds/420731340913115136/widget.json', {});
+//https://discordapp.com/api/guilds/420731340913115136/widget.json
                         const response = await fetch(vDiscordURL);
                         const u = await response.json();
-                    		//var vUserCount = u.presence_count
+                    		//console.log(u.presence_count)
                         if (vInVoiceOnly == false) {
                           vUserCount = u.presence_count
+                          //console.log(vUserCount)
                           var inState = 0
                           setState(context, inState);
                         } else if (vInVoiceOnly == true) {
                           vUserCount = u.members.filter(function(o) { return o.deaf == false }).length
+                          //console.log(vUserCount)
                           var inState = 1
                           setState(context, inState);
                         }
@@ -65,11 +67,22 @@
                         KrabsDiscordMemberCount.SetTitle(context, vUserCount);
                     }
                     getData();
-                    setInterval(() => {
-                    getData();
-                  }, vRefreshInterval * 1000)
-                   //console.log("refresh: ",vRefreshInterval) // 30 seconds
-                },
+                    setTimeout(function run() {
+                      getData();
+                      var payload = settingsCache[context];
+                      if (payload != null && payload.hasOwnProperty('vKrabs_Interval')) {
+                        var vRefreshInterval = payload['vKrabs_Interval'];
+                      }
+                      if (payload != null && payload.hasOwnProperty('vKrabs_DiscordURL')) {
+                        var vDiscordURL = payload['vKrabs_DiscordURL'];
+                      }
+                      if (payload != null && payload.hasOwnProperty('vKrabs_InVoiceOnly')) {
+                        var vInVoiceOnly = payload['vKrabs_InVoiceOnly'];
+                      }
+                      console.log("refresh: ",vRefreshInterval)
+                      setTimeout(run, vRefreshInterval * 1000);
+                    }, vRefreshInterval * 1000);
+                  },
 
                 onWillAppear: function (context, settings, coordinates) {
                     /* Code here will run when the Stream Deck application is opened, the user switches between profiles or when a user adds the action
@@ -106,7 +119,7 @@
                   settingsCache[context]
                 },
                 didReceiveSettings: function (context, payload) {
-                  console.log(settings)
+                  console.log("Did receive: ", settings)
                 }
             };
 // End of let KrabsDiscordMemberCount definition
