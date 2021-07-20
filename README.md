@@ -1,6 +1,9 @@
 com.krabs.discordMemberCount.sdPlugin
 # Streamdeck Discord Member Count
-![GitHub Logo](https://lh5.googleusercontent.com/hClGU_1YYTVLCgCwRAdRf-mCQUCmI2j-Z1_ZBMDPIYn6zXy6FC6z33XXm02qT9vgAabkk_A_ci-EQGHlFLGMpq6vZC2zt4FqfwZKDuTxNtglTZqjsEzthy1Gl9HfyRAlVw=w1280)
+![Image](https://lh3.googleusercontent.com/KmHx19i1R0e58ifjDxZx6eK1eFpxcvcCX83LKkT4mBJsL90XUmX6ICBgHTZP3hVxstIK9uGh96yLWqdvXzKJYvJbXIJJfM2Ge_b0p4XPdeKAL9oRrcqlbRWa3qg_l3-WWA=w1280)
+
+
+
 * Shows the number of members online or shows the number of members online in voice channels
 
 Visit https://www.krabs.me/streamdeck-plugins/discord-member-count for alternate Gaming Icon set and more information.
@@ -9,14 +12,14 @@ Visit https://www.krabs.me/streamdeck-plugins/discord-member-count for alternate
 
 *** You must have privileges on the Discord server to see server settings ***
 
-![GitHub Logo](https://lh3.googleusercontent.com/ahKnBCCOoqV9Tk0AuRVXjKTaU7KGrumfWxIB_VQTF02a_9uN88_bO2rkCGWzpMeIsGDtY0XSfJ39xMY4uT7gV1PL8N8jckA9xRVKXruSHontrNRCKFoxxh9zXzHl4GtyRA=w1280)
+![Image](https://lh4.googleusercontent.com/PkKYvCbJdCjUSOwi2sgKLaHknpXUKRL9Mau8fbDBFn3Y-iEs6Bm3GazRcBRwiduoH4EYrB8jhsc4_dNW0oc5ITy_6ck1xY735dAVC0I6ViKGXg_NAZxtFosqwSQymX6Akw=w1280)
 * In the Server Widget settings, enable the server widget.
 * Copy the JSON API setting.
 
-![GitHub Logo](https://lh3.googleusercontent.com/n6wvXec22yspwdhc-LCxTZYiHTBsHi2LGPfjgCNs5nboGfRmR6RglbKKj1BRbiqehvDJ1giegTpERHk-L2T9mUN8hUItOBPh9tFftY7qPBTKAzlpLMIvc8rtIOQSwWKV0w=w1280)
+![Image](https://lh3.googleusercontent.com/sFd_RD31nUj9pWXF5ybGq4qlXoyPcOdmqb970ylkPVKmT1XEpvXhxr6namlIRT6vSsO_r7K4hefyP3N5dyUSFDQCL5IB0IPPboh6RiDPlxUSVKjzGdWI6SdlcEQhOhJPJA=w1280)
 
 * In the Streamdeck plugin configuration, paste the JSON API from the Discord server into Discord Server's JSON API URL field.
 * Set the interval that you would like the the plugin to update. (60 seconds is recommended).
 * Choose whether you want to see ALL members connected to the server OR just those members who are in Voice Channels on the server.
 
-![GitHub Logo](https://lh6.googleusercontent.com/dVLbvfk-76WBmDXBCHI2UYeVe_qLAWol96Fbm4b2KnfbQEvl-47svoz9nrSF0ETwqwYzdnb32ZwUIKvoSHmOYpUa40M6PCkUcWS_InRgYv18zsZLTCrXY8GTsvjDqMnrjQ=w1280)
+![Image](https://lh5.googleusercontent.com/Ep8Rrz_X_QVRaPgqqDAScGSIdDckA40n105h3bfNAAJQhS-O2uSyNaZkSa_vsg6QsZo_IQh0H9RS7JMfSptoFwq8J_2kJv2nAEO5O68cqUAEla2yKiPIyEgRGKOyBwYhFw=w1280)
