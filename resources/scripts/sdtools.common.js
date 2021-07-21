@@ -2,7 +2,7 @@
 // * EasyPI v1.3
 // * Author: BarRaider
 // *
-// * JS library to simplify the communication between the 
+// * JS library to simplify the communication between the
 // * Stream Deck's Property Inspector and the plugin.
 // *
 // * Project page: https://github.com/BarRaider/streamdeck-easypi
@@ -194,7 +194,7 @@ function openWebsite() {
         const json = {
             'event': 'openUrl',
             'payload': {
-                'url': 'https://BarRaider.com'
+                'url': 'https://www.krabs.me/streamdeck-plugins'
             }
         };
         websocket.send(JSON.stringify(json));
