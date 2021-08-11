@@ -1,6 +1,6 @@
 com.krabs.discordMemberCount.sdPlugin
 # Streamdeck Discord Member Count
-![Image](https://i.postimg.cc/cCR4609s/68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f4b6d487831396931523065353869666a.png)
+![Image](https://i.postimg.cc/3NLrCyDL/web-plugin-icon-Discord-Member-Count-black.png)
 
 
 
