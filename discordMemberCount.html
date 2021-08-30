@@ -24,12 +24,23 @@
                     if (payload != null && payload.hasOwnProperty('vKrabs_DiscordURL')) {
                       var vDiscordURL = payload['vKrabs_DiscordURL'];
                     }
+                    if (payload != null && payload.hasOwnProperty('vKrabs_InVoiceOnly')) {
+                      var vInVoiceOnly = payload['vKrabs_InVoiceOnly'];
+                    }
                     var vURLArray = vDiscordURL.split( '/' );
                     var vServerID = vURLArray[5];
                     var vWidgetURL = "https://discord.com/widget?id=&theme=dark%22%20width=%22350%22%20height=%22500%22%20allowtransparency=%22true%22%20frameborder=%220%22%20sandbox=%22allow-popups%20allow-popups-to-escape-sandbox%20allow-same-origin%20allow-scripts%22";
                     var vWidgetURL = vWidgetURL.replace(/(id=)/, "id=" + vServerID);
-                    console.log("widgeturl: ", vDiscordURL)
+                    console.log("widgeturl: ", vInVoiceOnly)
                     window.open(vWidgetURL, "Discord Widget", "height = 500, width = 350")
+                    console.log("state: ", userDesiredState)
+                    if (vInVoiceOnly == false) {
+                      var inState = 0
+                      setState(context, inState);
+                    } else if (vInVoiceOnly == true) {
+                      var inState = 1
+                      setState(context, inState);
+                    }
                 },
                 fKrabs_GetData: function (context, settings) {
                     var payload = settingsCache[context];
